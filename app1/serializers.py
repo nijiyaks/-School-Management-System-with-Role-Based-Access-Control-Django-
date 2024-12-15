@@ -64,6 +64,9 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['email', 'name', 'phone_number', 'country_code', 'role', 'joining_date', 'password']
+        extra_kwargs = {
+            'password': {'write_only': True}  # Make password write-only
+        }
 
 class OfficeStaffSerializer(serializers.ModelSerializer):
     user = UserSerializer()
@@ -156,4 +159,25 @@ class LibraryReviewSerializer(serializers.ModelSerializer):
         model = LibraryReview
         fields = ['id', 'student', 'book', 'rating', 'comment', 'created_at']
 
-   
+# users serializer for updation and deletion
+
+class UsersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'name', 'phone_number', 'country_code', 'role', 'joining_date', 'is_active', 'is_superuser', 'is_staff', 'password']
+        extra_kwargs = {
+            'password': {'write_only': True},  # Password should be write-only
+        }
+
+    def update(self, instance, validated_data):
+        # Handle password update (if included in the request)
+        password = validated_data.pop('password', None)
+        if password:
+            validated_data['password'] = make_password(password)  # Hash the password
+        
+        # Update the user instance with the provided validated data
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        
+        instance.save()
+        return instance

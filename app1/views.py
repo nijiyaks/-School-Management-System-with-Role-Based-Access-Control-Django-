@@ -1,12 +1,12 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import RegisterSerializer,LoginSerializer,OfficeStaffSerializer,LibraryReviewSerializer,OfficeStaffSerializer,LibrarianSerializer,StudentSerializer, LibraryHistorySerializer, FeesHistorySerializer
+from .serializers import RegisterSerializer,LoginSerializer,UsersSerializer,OfficeStaffSerializer,LibraryReviewSerializer,OfficeStaffSerializer,LibrarianSerializer,StudentSerializer, LibraryHistorySerializer, FeesHistorySerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import login
 from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser  # Import built-in permission
-from .models import OfficeStaff,Librarian,Student,LibraryHistory,FeesHistory
+from .models import OfficeStaff,Librarian,Student,LibraryHistory,FeesHistory,User,LibraryReview
 from app1.permission import IsAdminOrStaff
 
 
@@ -286,10 +286,64 @@ class FeesHistoryAPIView(APIView):
 #  create library review 
 class LibraryReviewView(APIView):
     permission_classes = [IsAdminOrStaff]  
-
+    def get(self, request):
+        library_review=LibraryReview.objects.all()
+        serializer=LibraryReviewSerializer(library_review,many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
     def post(self, request):
         serializer = LibraryReviewSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()  
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserDetailView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+        user=User.objects.all()
+        serializer=UsersSerializer(user,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+
+    def get_object(self, user_id):
+        try:
+            return User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return None
+
+    def patch(self, request):
+        user_id = request.data.get('id')
+        if not user_id:
+            return Response({"detail": "ID is required in the request body."}, status=status.HTTP_400_BAD_REQUEST)
+
+        user = self.get_object(user_id)
+        if not user:
+            return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        # Ensure the user can only update their own data (optional)
+        if user != request.user and not request.user.is_superuser:
+            return Response({"detail": "You do not have permission to perform this action."}, status=status.HTTP_403_FORBIDDEN)
+
+        user_serializer = UsersSerializer(user, data=request.data, partial=True)
+        if user_serializer.is_valid():
+            user_serializer.save()
+            return Response(user_serializer.data, status=status.HTTP_200_OK)
+        return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request):
+        user_id = request.data.get('id')
+        if not user_id:
+            return Response({"detail": "ID is required in the request body."}, status=status.HTTP_400_BAD_REQUEST)
+
+        user = self.get_object(user_id)
+        if not user:
+            return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        # Ensure the user can only delete their own account (optional)
+        if user != request.user and not request.user.is_superuser:
+            return Response({"detail": "You do not have permission to perform this action."}, status=status.HTTP_403_FORBIDDEN)
+
+        user.delete()
+        return Response({"detail": "User deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
