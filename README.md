@@ -34,8 +34,12 @@ The School Management System is a web application developed using Django, design
 
 **Admin Dashboard**:-
 Comprehensive control over the system.
-Office Staff Dashboard: Access to manage fees and view records.
-Librarian Dashboard: View-only capabilities for library and student records.
+
+**Office Staff Dashboard:**
+Access to manage fees and view student and library history records.
+
+**Librarian Dashboard:**
+View-only capabilities for library and student records.
 
 **Student Management**:-
 CRUD operations on student details (name, division, roll number, etc.).
@@ -43,7 +47,7 @@ Enforces unique roll numbers for students within a division.
 
 **Library Management**:-
 Track library borrowing history.
-Add, edit, delete borrowing records (admin and office staff only).
+Add, edit, delete borrowing records (admin only).
 View borrowing status (borrowed/returned).
 
 ## Core Django Libraries:-
