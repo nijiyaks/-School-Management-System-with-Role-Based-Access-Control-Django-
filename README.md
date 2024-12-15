@@ -89,6 +89,6 @@ pip (Python package installer)
 
 ## Clone the Repository: 
 
-git clone https://github.com/nijiyaks/School-Management-System-Project-Django-.git      
+git clone  https://github.com/nijiyaks/-School-Management-System-with-Role-Based-Access-Control-Django-.git     
 cd School-Management-System-Project-Django-
 
