@@ -6,18 +6,23 @@ The School Management System is a web application developed using Django, design
 
 **Admin Role**
   1)Full access to all features.
+  
   2)Manage (create, edit, delete) accounts for Office Staff and Librarians.
+  
   3)Perform CRUD operations on student records, library histories, and fees records.
 
   
 **Office Staff Role**
   1)Access to all student details.
+  
   2)Manage (add, edit, delete) fees history.
+  
   3)View library borrowing records and student reviews.
 
   
 **Librarian Role**
   1)View-only access to student details and library history.
+  
   2)Focused on managing and viewing borrowing records.
 
 
