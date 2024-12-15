@@ -31,6 +31,7 @@ Add, edit, delete borrowing records (admin and office staff only).
 View borrowing status (borrowed/returned).
 
 Core Django Libraries:-
+
 Django==5.1.1
 djangorestframework==3.15.2
 django-filter==24.3
@@ -42,16 +43,25 @@ jwcrypto==1.5.6
 phonenumbers==8.13.45
 
 Technologies used:-
-Django: Web framework for building the application.
-Django Rest Framework (DRF): For creating the RESTful API.
-JWT Authentication: For secure authentication via tokens.
-phonenumbers: For parsing, formatting, and validating phone numbers.
-pytz: For managing timezones and timezone-aware datetime objects.
-Python: Core language used for backend logic.
-SQLite: Database systems for storing application data.
-Virtual Environment (venv): Used for isolating project dependencies and creating a clean development environment.
+
+1)Django: Web framework for building the application.
+
+2)Django Rest Framework (DRF): For creating the RESTful API.
+
+3)JWT Authentication: For secure authentication via tokens.
+
+4)phonenumbers: For parsing, formatting, and validating phone numbers.
+
+5)pytz: For managing timezones and timezone-aware datetime objects.
+
+6)Python: Core language used for backend logic.
+
+7)SQLite: Database systems for storing application data.
+
+8)Virtual Environment (venv): Used for isolating project dependencies and creating a clean development environment.
 
 Installation:-
+
 Make sure you have Python and pip installed on your system.
 
 Python >= 3.8
